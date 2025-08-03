@@ -1,9 +1,17 @@
-import { View, Text } from "react-native";
-import '../global.css'
+import { View, Text,Image } from "react-native";
+ import '../global.css'
+ import logo from '../assets/logo_light.png'
+import { Link } from "expo-router";
 export default function Home() {
   return (
-    <View className=' bg-green-500 h-full'>
-      <Text className='text-red-400 text-xl'>Helloooo World</Text>
+    <View className=' bg-green-500 flex-1 items-center justify-center'>
+      <Text className='text-3xl font-bold'>Helloooo World</Text>
+      <View>
+        <Text className='bg-gray-200 p-2 shadow-slate-100 shadow-xl'>hello this is card</Text>
+      </View>
+      <Image source={logo} className='my-8'></Image>
+    <Link href='/about' className='border-b-2 border-black border-solid mb-8'>About Page</Link>
+    <Link href='/contact' className='border-b-2 border-black border-solid'>Contact Page</Link>
     </View>
   );
 }
