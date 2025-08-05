@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router'
+import ThemedView from '../components/themedView'
+import ThemedText from '../components/themedText'
 
 const Contact = () => {
     return (
-        <View className='flex-1 items-center justify-center'>
-            <Text className='text-3xl'>Contact Page</Text>
+        <ThemedView className='flex-1 items-center justify-center'>
+            <ThemedText className='text-3xl'>Contact Page</ThemedText>
             <Link href="/" asChild>
-                <Text className="text-blue-500 mt-8">Back Home</Text>
+                <ThemedText className="text-blue-500 mt-8">Back Home</ThemedText>
             </Link>
-        </View>
+        </ThemedView>
     )
 }
 
