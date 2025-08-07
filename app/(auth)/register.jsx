@@ -6,11 +6,23 @@ import ThemedText from '../../components/themedText'
 import { Link } from 'expo-router'
 import { Colors } from '../../constants/colors'
 import ThemedTextInput from '../../components/themedTextInput'
+import { useUser } from '../../hooks/useUser'
 const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const handleSubmit = () => {
-        console.log('register form submitted', email, password);
+    const [error, seterror] = useState(null)
+    const { user, register } = useUser()
+    const handleSubmit = async () => {
+        seterror(null)
+        try {
+            await register(email, password)
+            console.log('current user is ', user);
+
+        } catch (error) {
+            console.log('msg');
+            console.log(error.message);
+            seterror(error.message)
+        }
     }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,6 +50,8 @@ const Register = () => {
                     className={`active:opacity-80 bg-[${Colors.primary}] p-4 rounded-md`}>
                     <ThemedText className={'!text-gray-200 text-center'}>Register</ThemedText>
                 </Pressable>
+                <Spacer></Spacer>
+                {error && <Text style={styles.error}>{error}</Text>}
                 <Spacer className={'h-24'}></Spacer>
                 <Link href={'/login'}>
                     <ThemedText className={'text-center'}>Login instead</ThemedText>
@@ -50,4 +64,14 @@ const Register = () => {
 
 export default Register
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    error: {
+        color: Colors.warning,
+        padding: 10,
+        backgroundColor: '#f5c1c8',
+        borderColor: Colors.warning,
+        borderWidth: 1,
+        borderRadius: 6,
+        marginHorizontal: 10,
+    }
+})

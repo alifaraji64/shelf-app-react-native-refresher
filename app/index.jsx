@@ -7,6 +7,7 @@ import ThemedCard from "../components/themedCard";
 import ThemedLogo from "../components/themedLogo";
 import Spacer from "../components/spacer";
 import ThemedText from "../components/themedText";
+import { Colors } from "../constants/colors";
 export default function Home() {
   return (
     <ThemedView className={'flex-1 items-center justify-center '} >

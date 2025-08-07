@@ -1,10 +1,31 @@
-import { Tabs } from "expo-router"
-import { useColorScheme } from "react-native";
+import { Tabs, useRouter } from "expo-router"
+import { useColorScheme, Text, ActivityIndicator } from "react-native";
 import { Colors } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
+import ThemedView from "../../components/themedView";
+import ThemedText from "../../components/themedText";
 const _layout = () => {
     const colorScheme = useColorScheme();
     const theme = Colors[colorScheme] ?? Colors.light
+
+    const { user, authChecked } = useUser()
+    const router = useRouter()
+    useEffect(() => {
+        console.log('tgtg');
+        if (!user && authChecked) {
+            router.replace('/login')
+        }
+
+    }, [user, authChecked])
+    if (!user) {
+        return <ThemedView className={'flex-1 justify-center items-center'}>
+            <ThemedText>Loading...</ThemedText>
+            <ActivityIndicator size={'large'} color={theme.text} />
+        </ThemedView>
+    }
+
     return (
         <Tabs
             screenOptions={{
@@ -32,7 +53,7 @@ const _layout = () => {
             <Tabs.Screen name="books"
                 options={
                     {
-                        title: 'Books', tabBarIcon: ({focused}) =>
+                        title: 'Books', tabBarIcon: ({ focused }) =>
                             <Ionicons name={focused ? "book" : "book-outline"}
                                 size={24}
                                 color={focused ? theme.iconColorFocused : theme.iconColor} />
@@ -42,7 +63,7 @@ const _layout = () => {
             <Tabs.Screen name="create"
                 options={
                     {
-                        title: 'Create', tabBarIcon: ({focused}) =>
+                        title: 'Create', tabBarIcon: ({ focused }) =>
                             <Ionicons name={focused ? "create" : "create-outline"}
                                 size={24}
                                 color={focused ? theme.iconColorFocused : theme.iconColor} />
