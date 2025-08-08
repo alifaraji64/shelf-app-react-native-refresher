@@ -27,7 +27,10 @@ export const BooksProvider = ({ children }) => {
     }
     const fetchBookById = async (id) => {
         try {
+            return await databases.getDocument(DATABASE_ID, COLLECTION_ID, id)
+
         } catch (error) {
+            throw new Error(error.message)
             console.log(error.message);
         }
     }
@@ -52,6 +55,9 @@ export const BooksProvider = ({ children }) => {
     }
     const deleteBook = async (id) => {
         try {
+            const res = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id)
+            console.log(res);
+
         } catch (error) {
             console.log(error.message);
         }
@@ -62,10 +68,19 @@ export const BooksProvider = ({ children }) => {
         if (user) {
             fetchBooks()
             unsubscribe = client.subscribe(channel, (res) => {
-                if(!res.events[0].includes('create'))return;
-                setbooks((prevBooks) => [...prevBooks, res.payload])
-                console.log(res);
-                
+                if (res.events[0].includes('delete')) {
+                    console.log('something deleted');
+                    console.log(res.payload);
+                    setbooks((prevBooks) =>
+                        prevBooks.filter(b => b.$id !== res.payload.$id)
+                    )
+                }
+                if (res.events[0].includes('create')) {
+                    setbooks((prevBooks) => [...prevBooks, res.payload])
+                    console.log(res);
+                }
+
+
 
             })
         }
